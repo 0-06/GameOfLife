@@ -1,6 +1,6 @@
 
 /**
- * Line 32 & 57 throwing erors. Commented out.
+ * 
  *
  * @author Nolan Peterson
  * @version 19/05/22
@@ -22,9 +22,7 @@ import java.util.*;
        int width = 20;
        int height = 20;
       
-        int max = 100;
-        int min = 1;
-        int range = max - min + 1;
+       
     
    
     
@@ -37,7 +35,7 @@ import java.util.*;
           
            
            
-            // random functions
+            // random function
            
       Random r = new Random();
 
@@ -49,7 +47,7 @@ import java.util.*;
            for (int x=0; x<width; x++){
                for (int y=0; y<height; y++) {
                    int state = r.nextInt(100)+1;
-                   if (state > 15){
+                   if (state > aliveProbability){
                        state = 0;
                     }
                     else {
@@ -61,10 +59,10 @@ import java.util.*;
                     
                  
                     
-                         System.out.print("#");
+                         System.out.print("  ");
                     
                           if (cells[x][y] == 1)
-                         System.out.print(" ");
+                         System.out.print("X ");
                     
                    
                 }
@@ -76,24 +74,59 @@ import java.util.*;
             
           
         }
-void iteration(){
-    for (int x=0; x<width; x++){
-        for (int y=0;y<height;y++){
-            cellsBuffer[x][y] = cells[x][y];
-        }
-    }
-
-
-   
- 
- 
-}
-}
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
+void iteration(int cells[][], int width, int height){ // Setting up the 'Next' Grid
     
 
+
+   for (int x=0; x<width; x++){
+               for (int y=0; y<height; y++) {
+                   cellsBuffer[x][y] = cells[x][y];
+                   
+                }
+             
+            }
+            
+            for (int x=0; x<width; x++) {
+                for (int y=0; y<height; y++){
+                    int neighbours=0;
+                    for (int xx=x-1; xx<=x+1; xx++){ // Very messy.
+                        for (int yy=y-1; yy<=y+1; yy++){
+                            if (((xx>=0)&&(xx<width))&&((yy>=0)&&(yy<height)))
+                            {
+                                if (!((xx==x)&&(yy==y))){  // Neighbour Check 
+                                    if (cellsBuffer[xx][yy]==1){
+                                        neighbours++;
+                                    }
+                                }
+                            }
+                            }
+                        }
+                        // More game rules - If less than 2 or more than 3 neighbours, die, if 3 neighbours, live
+                    if(cellsBuffer[x][y]==1){
+                        if (neighbours < 2 || neighbours > 3) {
+                            cells[x][y] = 0;
+                        }
+                    }
+                    else { 
+                        if (neighbours == 3) {
+                            cells[x][y] =1;
+                        }
+                        if (cells[x][y] == 0)
+                    
+                 
+                    
+                         System.out.print("  ");
+                    
+                          if (cells[x][y] == 1)
+                         System.out.print("X ");
+                    }
+                    }
+                    }
+                    
+                    }
+                }
+            
+            
+
+
+    

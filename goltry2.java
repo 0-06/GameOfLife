@@ -3,7 +3,7 @@
  * Line 32 & 57 throwing erors. Commented out.
  *
  * @author Nolan Peterson
- * @version 13/05/22
+ * @version 19/05/22
  */
 import java.util.Random;
 import java.util.*;
@@ -12,9 +12,9 @@ import java.util.*;
 
  class goltry2
 {
-    // instance variables - replace the example below with your own
-   int cellSize = 10; // size of grid square
-        float aliveProbability = 15; // chance of cells being alive when created
+   
+   
+        int aliveProbability = 15; // chance of cells being alive when created
         
         // array setup
        int[][] cells;
@@ -22,46 +22,63 @@ import java.util.*;
        int width = 20;
        int height = 20;
       
-       
+        int max = 100;
+        int min = 1;
+        int range = max - min + 1;
     
    
     
   
        
-        void setup () { // Screen size + Array initilizing
-          // size (20,20);
-           cells = new int[width/cellSize][height/cellSize]; 
-           cellsBuffer = new int[width/cellSize][height/cellSize];
+        void setup(String[]args) { // Screen size + Array initilizing
+          
+           cells = new int[width][height]; 
+       
           
            
            
             // random functions
-            Random rand = new Random();
-      int upperbound = 100;
-
-      float float_random=rand.nextFloat();
            
+      Random r = new Random();
+
+     
+      
+          
            // Determines which cells are alive or dead on generation
            
-           for (int x=0; x<width/cellSize; x++){
-               for (int y=0; y<height/cellSize; y++) {
-                   float state = float_random;
-                   if (state > aliveProbability){
+           for (int x=0; x<width; x++){
+               for (int y=0; y<height; y++) {
+                   int state = r.nextInt(100)+1;
+                   if (state > 15){
                        state = 0;
                     }
                     else {
                         state = 1;
                     }
-                    //cells[x][y] = int(state);
+                    
+                    cells[x][y] = state;
+                    if (cells[x][y] == 0)
+                    
+                 
+                    
+                         System.out.print("#");
+                    
+                          if (cells[x][y] == 1)
+                         System.out.print(" ");
+                    
+                   
                 }
+                
+                
+                System.out.println();
                
             }
             
-          // background(0);
+          
         }
 void iteration(){
-    for (int x=0; x<width/cellSize; x++){
-        for (int y=0;y<height/cellSize;y++){
+    for (int x=0; x<width; x++){
+        for (int y=0;y<height;y++){
             cellsBuffer[x][y] = cells[x][y];
         }
     }

@@ -1,7 +1,5 @@
 #BlueJ class context
 comment0.target=goltry2
 comment1.params=
-comment1.target=void\ setup()
-comment2.params=
-comment2.target=void\ iteration()
-numComments=3
+comment1.target=void\ main()
+numComments=2

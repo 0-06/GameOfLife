@@ -1,4 +1,3 @@
-
 /**
  * 
  *
@@ -28,10 +27,10 @@ public class goltry2
         boolean quit = false;
         int turnNumber = 1;
         boolean auto = false;
-        boolean stopped = false;
+       int autoDuration = 0;
         int autoNum = 0;
         cells = new int [WIDTH][HEIGHT];
-        Timer timer = new Timer();
+       
         // Keyboard Scanner
         Scanner keyboard = new Scanner(System.in);
 
@@ -81,21 +80,24 @@ public class goltry2
                 System.out.println("How many turns would you like it to be automatic for?");
                 autoNum = keyboard.nextInt();
                 while (auto == true){ 
-                    if (turnNumber <= autoNum) try {
+                    if (autoDuration <= autoNum) try {
                             Thread.sleep(500);
                             System.out.println("Turn #"+turnNumber);
                             turnNumber++;
+                            autoDuration++;
                             nextGen();
                         } catch (Exception e) {
                            
                         }
-                        if (turnNumber >= autoNum)
+                        if (autoDuration > autoNum) {
+                         auto=false;
+                         autoDuration=1;
+                        } 
                     }
                 
 
                 break;
-                case "stop": auto = false; stopped = true;
-                break;
+                
                 case "next":
 
                 System.out.println("Turn #"+turnNumber);
@@ -111,7 +113,7 @@ public class goltry2
                 break;
 
             }
-        }
+        } keyboard.close();
     }
 
     public static void nextGen(){
@@ -174,5 +176,3 @@ public class goltry2
         }
     }
 }
-
-   

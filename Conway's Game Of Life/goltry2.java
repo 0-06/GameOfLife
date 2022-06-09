@@ -3,43 +3,43 @@
  * 
  *
  * @author Nolan Peterson
- * @version 27/05/22
+ * @version 9/06/22
  */
 import java.util.Random;
-  import java.util.Timer; 
+import java.util.Timer; 
 import java.util.Scanner;
 import java.util.TimerTask; 
 
- public class goltry2
+public class goltry2
 {
 
-  
     //static int[][] cells; // grid
-     static final int WIDTH = 22;
+    static final int WIDTH = 22;
     static final int HEIGHT = 22;
-   static int [][] test;
-   
- static int [][]cells;
+    static int [][] test;
+
+    static int [][]cells;
     static String deadCell;
     static  String aliveCell;
     // array setup
-    
-    
+
     public static void main(String[] args) { 
-         String command;
-            boolean quit = false;
-     int turnNumber = 1;
-     boolean auto = false;
-    cells = new int [WIDTH][HEIGHT];
-Timer timer = new Timer();
+        String command;
+        boolean quit = false;
+        int turnNumber = 1;
+        boolean auto = false;
+        boolean stopped = false;
+        int autoNum = 0;
+        cells = new int [WIDTH][HEIGHT];
+        Timer timer = new Timer();
         // Keyboard Scanner
         Scanner keyboard = new Scanner(System.in);
 
         // Setting variables
         System.out.println("What would you like the dead cells to look like?");
-         deadCell =keyboard.nextLine();
+        deadCell =keyboard.nextLine();
         System.out.println("What would you like the alive cells to look like?");
-         aliveCell =keyboard.nextLine();
+        aliveCell =keyboard.nextLine();
 
         System.out.println("How likely would you like the cells to be alive on generation? (e.g. 5 for a 5% chance)");
         int aliveProbability = keyboard.nextInt(); // chance of cells being alive when created
@@ -57,7 +57,6 @@ Timer timer = new Timer();
                 else {
                     state = 1; // alive
                 }
-                
 
                 cells[x][y] = state; // print dead/alive cells
                 if (cells[x][y] == 0)
@@ -65,31 +64,50 @@ Timer timer = new Timer();
                     System.out.print(deadCell+ " ");
                 if (cells[x][y] == 1)
                     System.out.print(aliveCell+ " ");
-                   
+
             }
-            
+
             System.out.println();
 
         }
         System.out.println();
         // User interaction switch statement
-        
+
         System.out.println("Type 'Next' to advance");
         while (quit == false){
             command=keyboard.nextLine();
             switch(command){
                 case "auto":  auto = true;
-                while (auto == true) 
-                setInterval(nextGen(), 1000);
+                System.out.println("How many turns would you like it to be automatic for?");
+                autoNum = keyboard.nextInt();
+                while (auto == true){ 
+                    if (turnNumber <= autoNum) try {
+                            Thread.sleep(500);
+                            System.out.println("Turn #"+turnNumber);
+                            turnNumber++;
+                            nextGen();
+                        } catch (Exception e) {
+                           
+                        }
+                        if (turnNumber >= autoNum)
+                    }
                 
+
                 break;
-                case "stop": auto = false;
+                case "stop": auto = false; stopped = true;
                 break;
-                case "next":case "Next":
+                case "next":
 
                 System.out.println("Turn #"+turnNumber);
                 turnNumber++;
                 nextGen();
+                break;
+                case "quit": quit = true; auto = false;
+                break;
+                case "": 
+                break;
+                default: 
+                System.out.println("Invalid Command");
                 break;
 
             }
@@ -97,11 +115,11 @@ Timer timer = new Timer();
     }
 
     public static void nextGen(){
-       
-         for (int x=1; x<WIDTH-1; x++){
+
+        for (int x=1; x<WIDTH-1; x++){
             for (int y=1; y<HEIGHT-1; y++) {// Creating phantom cells that aren't printed to prevent crashes
                 int neighbours=0;
-                
+
                 //*** Neighbour check and bump 
 
                 if (cells[x][y+1]==1) {
@@ -156,8 +174,5 @@ Timer timer = new Timer();
         }
     }
 }
-
-            
-        
 
    

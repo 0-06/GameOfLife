@@ -2,35 +2,32 @@
  * 
  *
  * @author Nolan Peterson
- * @version 9/06/22
+ * @version 16/06/22
  */
 import java.util.Random;
-import java.util.Timer; 
+
 import java.util.Scanner;
-import java.util.TimerTask; 
 
 public class goltry2
 {
 
     //static int[][] cells; // grid
-    static final int WIDTH = 22;
-    static final int HEIGHT = 22;
-    static int [][] test;
-
+    static final int WIDTH = 22; // Grid width is 22, but I will only be showing 20
+    static final int HEIGHT = 22; // Height = 22
     static int [][]cells;
-    static String deadCell;
-    static  String aliveCell;
+    static String deadCell; // Setting what a dead cell looks like
+    static  String aliveCell;// Setting what a dead cell looks like
     // array setup
 
     public static void main(String[] args) { 
-        String command;
-        boolean quit = false;
-        int turnNumber = 1;
-        boolean auto = false;
-       int autoDuration = 0;
-        int autoNum = 0;
-        cells = new int [WIDTH][HEIGHT];
-       
+        String command; // While quit is false, we will be overwriting this string loads
+        boolean quit = false; // Looking for a 'command'
+        int turnNumber = 1; // Amount of turns is 1
+        boolean auto = false; // Automatically printing?
+        int autoDuration = 1; // How long  it has been auto
+        int autoNum = 0; // How many times has it will print
+        cells = new int [WIDTH][HEIGHT]; 
+
         // Keyboard Scanner
         Scanner keyboard = new Scanner(System.in);
 
@@ -49,8 +46,8 @@ public class goltry2
         // Determines which cells are alive or dead on generation
         for (int x=1; x<WIDTH-1; x++){
             for (int y=1; y<HEIGHT-1; y++) { // Creating phantom cells that aren't printed to prevent crashes
-                int state = r.nextInt(100)+1;
-                if (state > aliveProbability){
+                int state = r.nextInt(100)+1; // State = a random number 1-100
+                if (state > aliveProbability){ // If state is greater than alive probability, die
                     state = 0; // dead
                 }
                 else {
@@ -60,7 +57,7 @@ public class goltry2
                 cells[x][y] = state; // print dead/alive cells
                 if (cells[x][y] == 0)
 
-                    System.out.print(deadCell+ " ");
+                    System.out.print(deadCell+ " "); 
                 if (cells[x][y] == 1)
                     System.out.print(aliveCell+ " ");
 
@@ -73,38 +70,38 @@ public class goltry2
         // User interaction switch statement
 
         System.out.println("Type 'Next' to advance");
-        while (quit == false){
+        while (!quit){ // While the user has not quit, always look for a command
             command=keyboard.nextLine();
+            command=command.toLowerCase(); // Converts input into lowercase, meaning commands are not case sensitive
             switch(command){
+                // If the command is automatic, ask for how many turns to advance
                 case "auto":  auto = true;
                 System.out.println("How many turns would you like it to be automatic for?");
-                autoNum = keyboard.nextInt();
-                while (auto == true){ 
+                autoNum = keyboard.nextInt(); // how many grids to auto print
+                while (auto == true){ //While auto is true, and autoduration is less than autonum, print grids at a 250ms interval
                     if (autoDuration <= autoNum) try {
-                            Thread.sleep(500);
+                            Thread.sleep(250);
                             System.out.println("Turn #"+turnNumber);
+
+                            nextGen();
                             turnNumber++;
                             autoDuration++;
-                            nextGen();
                         } catch (Exception e) {
-                           
+
                         }
-                        if (autoDuration > autoNum) {
-                         auto=false;
-                         autoDuration=1;
-                        } 
-                    }
-                
+                    if (autoDuration > autoNum) { // if it's been going too long, change auto to false, and autoduration to 1
+                        auto=false;
+                        autoDuration=1;
+                    } 
+                }
 
                 break;
-                
-                case "next":
-
+                case "next": // Advances 1 turn
                 System.out.println("Turn #"+turnNumber);
                 turnNumber++;
                 nextGen();
                 break;
-                case "quit": quit = true; auto = false;
+                case "quit": quit = true; // Stops asking for keyboard input
                 break;
                 case "": 
                 break;
@@ -122,7 +119,7 @@ public class goltry2
             for (int y=1; y<HEIGHT-1; y++) {// Creating phantom cells that aren't printed to prevent crashes
                 int neighbours=0;
 
-                //*** Neighbour check and bump 
+                //*** Neighbour check and bump. Should be tidied up
 
                 if (cells[x][y+1]==1) {
                     neighbours++;
@@ -148,6 +145,7 @@ public class goltry2
                 if (cells[x-1][y-1]==1) {
                     neighbours++;
                 }
+
 
                 //  game rules 
                 if(cells[x][y]==1){

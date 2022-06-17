@@ -2,7 +2,7 @@
  * 
  *
  * @author Nolan Peterson
- * @version 16/06/22
+ * @version 17/06/22
  */
 import java.util.Random;
 
@@ -17,17 +17,20 @@ public class goltry2
     static int [][]cells;
     static String deadCell; // Setting what a dead cell looks like
     static  String aliveCell;// Setting what a dead cell looks like
+    static int [][]future;
+    static boolean auto = false; // Automatically printing
+    static boolean sameGrid =false;
     // array setup
 
     public static void main(String[] args) { 
         String command; // While quit is false, we will be overwriting this string loads
         boolean quit = false; // Looking for a 'command'
         int turnNumber = 1; // Amount of turns is 1
-        boolean auto = false; // Automatically printing?
+       
         int autoDuration = 1; // How long  it has been auto
         int autoNum = 0; // How many times has it will print
         cells = new int [WIDTH][HEIGHT]; 
-
+        
         // Keyboard Scanner
         Scanner keyboard = new Scanner(System.in);
 
@@ -79,7 +82,7 @@ public class goltry2
                 System.out.println("How many turns would you like it to be automatic for?");
                 autoNum = keyboard.nextInt(); // how many grids to auto print
                 while (auto == true){ //While auto is true, and autoduration is less than autonum, print grids at a 250ms interval
-                    if (autoDuration <= autoNum) try {
+                    if (autoDuration <= autoNum && cells!=future) try {
                             Thread.sleep(250);
                             System.out.println("Turn #"+turnNumber);
 
@@ -93,6 +96,10 @@ public class goltry2
                         auto=false;
                         autoDuration=1;
                     } 
+                    if (cells==future){
+                        auto=false;
+                        autoDuration=1;
+                    }
                 }
 
                 break;
@@ -114,7 +121,7 @@ public class goltry2
     }
 
     public static void nextGen(){
-
+  int [][]future= new int [WIDTH][HEIGHT];
         for (int x=1; x<WIDTH-1; x++){
             for (int y=1; y<HEIGHT-1; y++) {// Creating phantom cells that aren't printed to prevent crashes
                 int neighbours=0;
@@ -145,32 +152,55 @@ public class goltry2
                 if (cells[x-1][y-1]==1) {
                     neighbours++;
                 }
+                
 
 
                 //  game rules 
                 if(cells[x][y]==1){
                     if ((neighbours < 2) || (neighbours > 3)) { // If a cell has less than 2 or more than 3 neighbours, Die
-                        cells[x][y] = 0;
+                        future[x][y] = 0;
                     }
                 }
-                else { 
+                
+                if (cells[x][y]==1 && neighbours ==2 ){
+                    future[x][y]=1;
+                }
+                
+                if (cells[x][y]==0 && neighbours == 2){
+                    future[x][y]=0;
+                }
+            
+                 
                     if (neighbours == 3) { // If a cell has 3 neighbours, become a live cell.
-                        cells[x][y] =1;
+                        future[x][y] =1;
                     }
                     // If not, remain the same
-                }
+                
                 // Print grid
-                if (cells[x][y] == 0){
+                if (future[x][y] == 0){
 
                     System.out.print(deadCell+" ");
                 }
-                if (cells[x][y] == 1){
+                if (future[x][y] == 1){
 
                     System.out.print(aliveCell+ " ");
                 }
-
+             
             }
+            
             System.out.println();
+            
         }
+       
+        
+           for (int x=1; x<WIDTH-1; x++){
+            for (int y=1; y<HEIGHT-1; y++)
+                if (future[x][y]==1) {
+                    cells[x][y]=1;
+                }
+                else{
+                    cells[x][y]=0;
+                }
+            }
     }
 }

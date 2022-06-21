@@ -5,7 +5,7 @@
  * @version 17/06/22
  */
 import java.util.Random;
-
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class goltry2
@@ -26,11 +26,11 @@ public class goltry2
         String command; // While quit is false, we will be overwriting this string loads
         boolean quit = false; // Looking for a 'command'
         int turnNumber = 1; // Amount of turns is 1
-       
+
         int autoDuration = 1; // How long  it has been auto
         int autoNum = 0; // How many times has it will print
         cells = new int [WIDTH][HEIGHT]; 
-        
+
         // Keyboard Scanner
         Scanner keyboard = new Scanner(System.in);
 
@@ -82,23 +82,30 @@ public class goltry2
                 System.out.println("How many turns would you like it to be automatic for?");
                 autoNum = keyboard.nextInt(); // how many grids to auto print
                 while (auto == true){ //While auto is true, and autoduration is less than autonum, print grids at a 250ms interval
-                    if (autoDuration <= autoNum && cells!=future) try {
-                            Thread.sleep(250);
-                            System.out.println("Turn #"+turnNumber);
 
-                            nextGen();
-                            turnNumber++;
-                            autoDuration++;
-                        } catch (Exception e) {
+                    try {
+                        Thread.sleep(250);
+                        System.out.println("Turn #"+turnNumber);
 
-                        }
+                        nextGen();
+                        turnNumber++;
+                        autoDuration++;
+                    } catch (Exception e) {
+
+                    }
                     if (autoDuration > autoNum) { // if it's been going too long, change auto to false, and autoduration to 1
                         auto=false;
                         autoDuration=1;
                     } 
-                    if (cells==future){
-                        auto=false;
-                        autoDuration=1;
+                    for (int x=1; x<WIDTH-1; x++){
+                        for (int y=1; y<HEIGHT-1; y++)
+                            if (Arrays.deepEquals(future,cells)) {
+                               auto=false;
+                               autoDuration=1;
+                            }
+                            
+
+                        
                     }
                 }
 
@@ -121,7 +128,7 @@ public class goltry2
     }
 
     public static void nextGen(){
-  int [][]future= new int [WIDTH][HEIGHT];
+        int [][]future= new int [WIDTH][HEIGHT];
         for (int x=1; x<WIDTH-1; x++){
             for (int y=1; y<HEIGHT-1; y++) {// Creating phantom cells that aren't printed to prevent crashes
                 int neighbours=0;
@@ -152,7 +159,6 @@ public class goltry2
                 if (cells[x-1][y-1]==1) {
                     neighbours++;
                 }
-                
 
 
                 //  game rules 
@@ -161,21 +167,20 @@ public class goltry2
                         future[x][y] = 0;
                     }
                 }
-                
+
                 if (cells[x][y]==1 && neighbours ==2 ){
                     future[x][y]=1;
                 }
-                
+
                 if (cells[x][y]==0 && neighbours == 2){
                     future[x][y]=0;
                 }
-            
-                 
-                    if (neighbours == 3) { // If a cell has 3 neighbours, become a live cell.
-                        future[x][y] =1;
-                    }
-                    // If not, remain the same
-                
+
+                if (neighbours == 3) { // If a cell has 3 neighbours, become a live cell.
+                    future[x][y] =1;
+                }
+                // If not, remain the same
+
                 // Print grid
                 if (future[x][y] == 0){
 
@@ -185,15 +190,14 @@ public class goltry2
 
                     System.out.print(aliveCell+ " ");
                 }
-             
+
             }
-            
+
             System.out.println();
-            
+
         }
-       
-        
-           for (int x=1; x<WIDTH-1; x++){
+
+        for (int x=1; x<WIDTH-1; x++){
             for (int y=1; y<HEIGHT-1; y++)
                 if (future[x][y]==1) {
                     cells[x][y]=1;
@@ -201,6 +205,6 @@ public class goltry2
                 else{
                     cells[x][y]=0;
                 }
-            }
+        }
     }
 }

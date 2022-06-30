@@ -83,14 +83,14 @@ public class goltry2
             break; 
 
             case "manual": case "2": case "manually":case"man":
-            System.out.println("You have chosen manual, Type any word when you would like to continue");
+            System.out.println("You have chosen manual. When you have finished, type 'Next' to continue");
             boolean manualPlaying = true;
             while (manualPlaying){
 
-                System.out.println("Select the row of a cell you would like to turn on");
+                System.out.println("Select the column of a cell you would like to turn on");
 
-                if(keyboard.hasNextInt()){ // If there is an int, it means they want to change column. If not, they probably want to continue.
-                    row=keyboard.nextInt();
+                if(keyboard.hasNextInt()){ // If there is an int, it means they want to change column/row. If not, they probably want to continue.
+                    column=keyboard.nextInt();
                 }
                 else {
 
@@ -98,9 +98,9 @@ public class goltry2
                     manualPlaying = false;
                     break;
                 }
-                System.out.println("Select the column of a cell you would like to turn on");
+                System.out.println("Select the row of a cell you would like to turn on");
                 if(keyboard.hasNextInt()){
-                    column=keyboard.nextInt();
+                    row=keyboard.nextInt();
                 }
                 else {
 

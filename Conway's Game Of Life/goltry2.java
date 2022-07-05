@@ -11,7 +11,6 @@ import java.util.Scanner;
 public class goltry2
 {
 
-    //static int[][] cells; // grid
     static final int WIDTH = 22; // Grid width is 22, but I will only be showing 20
     static final int HEIGHT = 22; // Height = 22
     static int [][]cells;
@@ -21,6 +20,8 @@ public class goltry2
     static boolean auto = false; // Automatically printing
     static boolean sameGrid =false;
     static String chooseMode;
+    static int autoDuration = 1;
+    static boolean arrayCheck = true;
     // array setup
 
     public static void main(String[] args) { 
@@ -29,7 +30,7 @@ public class goltry2
         int turnNumber = 1; // Amount of turns is 1
         int row = 0;
         int column = 0;
-        int autoDuration = 1; // How long  it has been auto
+        // How long  it has been auto
         int autoNum = 0; // How many times has it will print
         cells = new int [WIDTH][HEIGHT]; 
 
@@ -124,10 +125,8 @@ public class goltry2
                 }
             }
             break;
-           
-           
-        }
 
+        }
         // User interaction switch statement
         System.out.println("Type 'Next' to advance");
         while (!quit){ // While the user has not quit, always look for a command
@@ -147,6 +146,15 @@ public class goltry2
                         nextGen();
                         turnNumber++;
                         autoDuration++;
+                        for (int x=1; x<WIDTH-1; x++){
+                            for (int y=1; y<HEIGHT-1; y++)
+                                if (cells[x][y]==future[x][y]){
+
+                                    auto=false;
+                                    autoDuration=1;
+                                    arrayCheck=false;
+                                }
+                        }
                     } catch (Exception e) {
 
                     }
@@ -155,14 +163,8 @@ public class goltry2
                         autoDuration=1;
                     } 
 
-                    boolean arrayCheck = Arrays.equals(cells,future);
-                    if (arrayCheck==true){
-                        auto=false;
-                        autoDuration=1;
-                    }
 
                 }
-
                 break;
                 case "next": // Advances 1 turn
                 System.out.println("Turn #"+turnNumber);
@@ -183,6 +185,8 @@ public class goltry2
 
     public static void nextGen(){
         int [][]future= new int [WIDTH][HEIGHT];
+
+        
         for (int x=1; x<WIDTH-1; x++){
             for (int y=1; y<HEIGHT-1; y++) {// Creating phantom cells that aren't printed to prevent crashes
                 int neighbours=0;
@@ -252,6 +256,7 @@ public class goltry2
 
         for (int x=1; x<WIDTH-1; x++){
             for (int y=1; y<HEIGHT-1; y++)
+
                 if (future[x][y]==1) {
                     cells[x][y]=1;
                 }
@@ -259,5 +264,7 @@ public class goltry2
                     cells[x][y]=0;
                 }
         }
+
     }
+
 }

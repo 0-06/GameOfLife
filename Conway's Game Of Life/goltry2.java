@@ -2,7 +2,7 @@
  * 
  *
  * @author Nolan Peterson
- * @version 17/06/22
+ * @version 7/07/22
  */
 import java.util.Random;
 import java.util.Arrays;
@@ -16,19 +16,18 @@ public class goltry2
     static int [][]cells;
     static String deadCell; // Setting what a dead cell looks like
     static  String aliveCell;// Setting what a dead cell looks like
-    static int [][]future;
+    static int [][]future; // next grid
     static boolean auto = false; // Automatically printing
-    static boolean sameGrid =false;
-    static String chooseMode;
-    static int autoDuration = 1;
-    static boolean arrayCheck = true;
-    // array setup
+ 
+    static String chooseMode; // Choosemode
+    static int autoDuration = 1; // How long it has been automatically playing
+    
 
     public static void main(String[] args) { 
         String command; // While quit is false, we will be overwriting this string loads
         boolean quit = false; // Looking for a 'command'
         int turnNumber = 1; // Amount of turns is 1
-        int row = 0;
+        int row = 0; // For manual selection
         int column = 0;
         // How long  it has been auto
         int autoNum = 0; // How many times has it will print
@@ -37,7 +36,7 @@ public class goltry2
         // Keyboard Scanner
         Scanner keyboard = new Scanner(System.in);
 
-        // Setting variables
+        // Setting the visual indicators for dead and alive
         System.out.println("What would you like the dead cells to look like?");
         deadCell =keyboard.nextLine();
         System.out.println("What would you like the alive cells to look like?");
@@ -45,90 +44,97 @@ public class goltry2
 
         // random function
         Random r = new Random();
-
+        boolean chosenMode = false;
         // Determines which cells are alive or dead on generation
         System.out.println("Would you like cells to be automatically generated or manually?");
-        chooseMode=keyboard.nextLine();
-        chooseMode=chooseMode.toLowerCase();
+        while (chosenMode ==false){ // The loop allows you to input something wrong, and have it loop back so you don't crash 
+            chooseMode=keyboard.nextLine();
+            chooseMode=chooseMode.toLowerCase();
 
-        switch(chooseMode){ // Choosing auto or manual generation
-            case "auto": case"1": case "automatic":
-            System.out.println("You have chosen automatic");
-            System.out.println("How likely would you like the cells to be alive on generation? (e.g. 5 for a 5% chance)");
+            switch(chooseMode){ // Choosing auto or manual generation
+                case "auto": case"1": case "automatic":
+                chosenMode=true;
+                System.out.println("You have chosen automatic");
+                System.out.println("How likely would you like the cells to be alive on generation? (e.g. 5 for a 5% chance)");
 
-            int aliveProbability = keyboard.nextInt(); // chance of cells being alive when created
-            for (int x=1; x<WIDTH-1; x++){
-                for (int y=1; y<HEIGHT-1; y++) { // Creating phantom cells that aren't printed to prevent crashes
-                    int state = r.nextInt(100)+1; // State = a random number 1-100
-                    if (state > aliveProbability){ // If state is greater than alive probability, die
-                        state = 0; // dead
-                    }
-                    else {
-                        state = 1; // alive
-                    }
-
-                    cells[x][y] = state; // print dead/alive cells
-                    if (cells[x][y] == 0)
-
-                        System.out.print(deadCell+ " "); 
-                    if (cells[x][y] == 1)
-                        System.out.print(aliveCell+ " ");
-
-                }
-
-                System.out.println();
-
-            }
-
-            System.out.println();
-            break; 
-
-            case "manual": case "2": case "manually":case"man":
-            System.out.println("You have chosen manual. When you have finished, type 'Next' to continue");
-            boolean manualPlaying = true;
-            while (manualPlaying){
-
-                System.out.println("Select the column of a cell you would like to turn on");
-
-                if(keyboard.hasNextInt()){ // If there is an int, it means they want to change column/row. If not, they probably want to continue.
-                    column=keyboard.nextInt();
-                }
-                else {
-
-                    chooseMode=keyboard.nextLine();
-                    manualPlaying = false;
-                    break;
-                }
-                System.out.println("Select the row of a cell you would like to turn on");
-                if(keyboard.hasNextInt()){
-                    row=keyboard.nextInt();
-                }
-                else {
-
-                    chooseMode=keyboard.nextLine();
-                    manualPlaying = false;
-                    break;
-                }
+                int aliveProbability = keyboard.nextInt(); // chance of cells being alive when created
                 for (int x=1; x<WIDTH-1; x++){
-                    for (int y=1; y<HEIGHT-1; y++) {
+                    for (int y=1; y<HEIGHT-1; y++) { // Creating phantom cells that aren't printed to prevent crashes
+                        int state = r.nextInt(100)+1; // State = a random number 1-100
+                        if (state > aliveProbability){ // If state is greater than alive probability, die
+                            state = 0; // dead
+                        }
+                        else {
+                            state = 1; // alive
+                        }
 
-                        cells[row][column]=1;
-
+                        cells[x][y] = state; // print dead/alive cells
                         if (cells[x][y] == 0)
 
                             System.out.print(deadCell+ " "); 
                         if (cells[x][y] == 1)
                             System.out.print(aliveCell+ " ");
+
                     }
+
                     System.out.println();
 
                 }
-            }
-            break;
 
+                System.out.println();
+                break; 
+
+                case "manual": case "2": case "manually":case"man":
+                chosenMode=true;
+                System.out.println("You have chosen manual. When you have finished, type 'Next' to continue");
+                boolean manualPlaying = true;
+                while (manualPlaying){
+
+                    System.out.println("Select the column of a cell you would like to turn on");
+
+                    if(keyboard.hasNextInt()){ // If there is an int, it means they want to change column/row. If not, they probably want to continue.
+                        column=keyboard.nextInt();
+                    }
+                    else {
+
+                        chooseMode=keyboard.nextLine();
+                        manualPlaying = false;
+                        break;
+                    }
+                    System.out.println("Select the row of a cell you would like to turn on");
+                    if(keyboard.hasNextInt()){
+                        row=keyboard.nextInt();
+                    }
+                    else {
+
+                        chooseMode=keyboard.nextLine();
+                        manualPlaying = false;
+                        break;
+                    }
+                    for (int x=1; x<WIDTH-1; x++){ // print da griddy
+                        for (int y=1; y<HEIGHT-1; y++) {
+
+                            cells[row][column]=1;
+
+                            if (cells[x][y] == 0)
+
+                                System.out.print(deadCell+ " "); 
+                            if (cells[x][y] == 1)
+                                System.out.print(aliveCell+ " ");
+                        }
+                        System.out.println();
+
+                    }
+                }
+                break;
+                default:
+                System.out.println("Invalid Command, Choose Manual or Auto.");
+
+                break;
+            }
         }
         // User interaction switch statement
-        System.out.println("Type 'Next' to advance");
+        
         while (!quit){ // While the user has not quit, always look for a command
             command=keyboard.nextLine();
             command=command.toLowerCase(); // Converts input into lowercase, meaning commands are not case sensitive
@@ -140,21 +146,13 @@ public class goltry2
                 while (auto == true){ //While auto is true, and autoduration is less than autonum, print grids at a 250ms interval
 
                     try {
-                        Thread.sleep(250);
+                        Thread.sleep(250); // wait 250ms per generation - prevents lag
                         System.out.println("Turn #"+turnNumber);
 
                         nextGen();
                         turnNumber++;
                         autoDuration++;
-                        for (int x=1; x<WIDTH-1; x++){
-                            for (int y=1; y<HEIGHT-1; y++)
-                                if (cells[x][y]==future[x][y]){
 
-                                    auto=false;
-                                    autoDuration=1;
-                                    arrayCheck=false;
-                                }
-                        }
                     } catch (Exception e) {
 
                     }
@@ -173,7 +171,8 @@ public class goltry2
                 break;
                 case "quit": quit = true; // Stops asking for keyboard input
                 break;
-                case "": 
+                case "":
+                System.out.println("Type 'Next' to advance");// When you get in, the 'case' will automatically be nothing, but for some reason this was prompting the default case so I set a special one.
                 break;
                 default: 
                 System.out.println("Invalid Command");
@@ -184,9 +183,8 @@ public class goltry2
     }
 
     public static void nextGen(){
-        int [][]future= new int [WIDTH][HEIGHT];
+        future= new int [WIDTH][HEIGHT];
 
-        
         for (int x=1; x<WIDTH-1; x++){
             for (int y=1; y<HEIGHT-1; y++) {// Creating phantom cells that aren't printed to prevent crashes
                 int neighbours=0;
@@ -247,24 +245,33 @@ public class goltry2
 
                     System.out.print(aliveCell+ " ");
                 }
-
+                
             }
 
-            System.out.println();
+                System.out.println();
 
-        }
+            }
+// for (int x=1; x<WIDTH-1; x++){
+                    // for (int y=1; y<HEIGHT-1; y++){
 
-        for (int x=1; x<WIDTH-1; x++){
-            for (int y=1; y<HEIGHT-1; y++)
+                        // if (Arrays.deepEquals(cells[x][y],future[x][y]))
+                            // System.out.println("Game has reached a steady state");
+                            // auto=false;
+                            // autoDuration=1;
+                        // }
+                        
+                // }
+            for (int x=1; x<WIDTH-1; x++){
+                for (int y=1; y<HEIGHT-1; y++)
 
-                if (future[x][y]==1) {
-                    cells[x][y]=1;
-                }
-                else{
-                    cells[x][y]=0;
-                }
+                    if (future[x][y]==1) {
+                        cells[x][y]=1;
+                    }
+                    else{
+                        cells[x][y]=0;
+                    }
+            }
+
         }
 
     }
-
-}

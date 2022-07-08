@@ -18,10 +18,9 @@ public class goltry2
     static  String aliveCell;// Setting what a dead cell looks like
     static int [][]future; // next grid
     static boolean auto = false; // Automatically printing
- 
+    static int cellsSave[][];
     static String chooseMode; // Choosemode
     static int autoDuration = 1; // How long it has been automatically playing
-    
 
     public static void main(String[] args) { 
         String command; // While quit is false, we will be overwriting this string loads
@@ -32,7 +31,7 @@ public class goltry2
         // How long  it has been auto
         int autoNum = 0; // How many times has it will print
         cells = new int [WIDTH][HEIGHT]; 
-
+        cellsSave = new int [WIDTH][HEIGHT];
         // Keyboard Scanner
         Scanner keyboard = new Scanner(System.in);
 
@@ -70,11 +69,11 @@ public class goltry2
 
                         cells[x][y] = state; // print dead/alive cells
                         if (cells[x][y] == 0)
-
-                            System.out.print(deadCell+ " "); 
+                            cellsSave[x][y]=0;
+                        System.out.print(deadCell+ " "); 
                         if (cells[x][y] == 1)
                             System.out.print(aliveCell+ " ");
-
+                        cellsSave[x][y]=1;
                     }
 
                     System.out.println();
@@ -117,11 +116,13 @@ public class goltry2
                             cells[row][column]=1;
 
                             if (cells[x][y] == 0)
-
-                                System.out.print(deadCell+ " "); 
+                                cellsSave[x][y]=0;
+                            System.out.print(deadCell+ " "); 
                             if (cells[x][y] == 1)
                                 System.out.print(aliveCell+ " ");
+                            cellsSave[x][y]=1;
                         }
+
                         System.out.println();
 
                     }
@@ -134,7 +135,7 @@ public class goltry2
             }
         }
         // User interaction switch statement
-        
+
         while (!quit){ // While the user has not quit, always look for a command
             command=keyboard.nextLine();
             command=command.toLowerCase(); // Converts input into lowercase, meaning commands are not case sensitive
@@ -160,7 +161,6 @@ public class goltry2
                         auto=false;
                         autoDuration=1;
                     } 
-
 
                 }
                 break;
@@ -245,33 +245,43 @@ public class goltry2
 
                     System.out.print(aliveCell+ " ");
                 }
-                
-            }
-
-                System.out.println();
 
             }
-// for (int x=1; x<WIDTH-1; x++){
-                    // for (int y=1; y<HEIGHT-1; y++){
 
-                        // if (Arrays.deepEquals(cells[x][y],future[x][y]))
-                            // System.out.println("Game has reached a steady state");
-                            // auto=false;
-                            // autoDuration=1;
-                        // }
-                        
-                // }
-            for (int x=1; x<WIDTH-1; x++){
-                for (int y=1; y<HEIGHT-1; y++)
+            System.out.println();
 
-                    if (future[x][y]==1) {
-                        cells[x][y]=1;
+        }
+        // for (int x=1; x<WIDTH-1; x++){
+        // for (int y=1; y<HEIGHT-1; y++){
+
+        // if (Arrays.deepEquals(cells[x][y],future[x][y]))
+        // System.out.println("Game has reached a steady state");
+        // auto=false;
+        // autoDuration=1;
+        // }
+
+        // }
+        //int cellsSave[][] = new int [WIDTH][HEIGHT];
+        for (int x=1; x<WIDTH-1; x++){
+                        for (int y=1; y<HEIGHT-1; y++){
+
+                            if (future[x][y]==1) {
+                                cells[x][y]=1;
+                            }
+                            else{
+                                cells[x][y]=0;
+                            }
+                        }
                     }
-                    else{
-                        cells[x][y]=0;
-                    }
+        for(int i = 0; i < cells.length; i++){
+            for(int j = 1; j < future[i].length; j++){
+                if(cells[i][0]==(future[i][j])){
+                    auto=false;
+                    autoDuration=1;
+                    
+                }
             }
-
         }
 
     }
+}

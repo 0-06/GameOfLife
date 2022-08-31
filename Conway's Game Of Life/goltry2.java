@@ -2,7 +2,7 @@
  * 
  *
  * @author Nolan Peterson
- * @version 7/07/22
+ * @version 28/07/22
  */
 import java.util.Random;
 import java.util.Arrays;
@@ -18,7 +18,7 @@ public class goltry2
     static  String aliveCell;// Setting what a dead cell looks like
     static int [][]future; // next grid
     static boolean auto = false; // Automatically printing
-    static int cellsSave[][];
+    //static int cellsSave[][];
     static String chooseMode; // Choosemode
     static int autoDuration = 1; // How long it has been automatically playing
 
@@ -31,7 +31,7 @@ public class goltry2
         // How long  it has been auto
         int autoNum = 0; // How many times has it will print
         cells = new int [WIDTH][HEIGHT]; 
-        cellsSave = new int [WIDTH][HEIGHT];
+        //cellsSave = new int [WIDTH][HEIGHT];
         // Keyboard Scanner
         Scanner keyboard = new Scanner(System.in);
 
@@ -69,11 +69,11 @@ public class goltry2
 
                         cells[x][y] = state; // print dead/alive cells
                         if (cells[x][y] == 0)
-                            cellsSave[x][y]=0;
+                           
                         System.out.print(deadCell+ " "); 
                         if (cells[x][y] == 1)
                             System.out.print(aliveCell+ " ");
-                        cellsSave[x][y]=1;
+                        
                     }
 
                     System.out.println();
@@ -116,11 +116,11 @@ public class goltry2
                             cells[row][column]=1;
 
                             if (cells[x][y] == 0)
-                                cellsSave[x][y]=0;
+                               
                             System.out.print(deadCell+ " "); 
                             if (cells[x][y] == 1)
                                 System.out.print(aliveCell+ " ");
-                            cellsSave[x][y]=1;
+                           
                         }
 
                         System.out.println();
@@ -273,15 +273,15 @@ public class goltry2
                             }
                         }
                     }
-        for(int i = 0; i < cells.length; i++){
-            for(int j = 1; j < future[i].length; j++){
-                if(cells[i][0]==(future[i][j])){
-                    auto=false;
-                    autoDuration=1;
+        // for(int i = 0; i < cells.length; i++){
+            // for(int j = 1; j < future[i].length; j++){
+                // if(cells[i][0]==(future[i][j])){
+                    // auto=false;
+                    // autoDuration=1;
                     
-                }
-            }
-        }
+                // }
+            // }
+        // }
 
     }
 }
